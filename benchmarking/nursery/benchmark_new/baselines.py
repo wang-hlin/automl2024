@@ -44,25 +44,26 @@ class MethodArguments:
     max_t: Optional[int] = None
     max_resource_attr: Optional[str] = None
     use_surrogates: bool = False
+    transfer_learning_evaluations: Optional[Dict] = None
     num_brackets: Optional[int] = 1
     verbose: Optional[bool] = False
 
 
 class Methods:
-    # RS = "RS"
-    # ASHA = "ASHA"
-    # # MSR = "RS-MSR"
-    # # ASHA_BB = "ASHA-BB"
-    # # ASHA_CTS = "ASHA-CTS"
-    # GP = "GP"
-    # BOHB = "BOHB"
-    # REA = "REA"
-    # MOBSTER = "MOB"
-    # TPE = "TPE"
-    # # BORE = "BORE"
-    # # ZERO_SHOT = "ZS"
-    # # RUSH = "RUSH"
-    # HYPERTUNE = "HT"
+    RS = "RS"
+    ASHA = "ASHA"
+    # MSR = "RS-MSR"
+    # ASHA_BB = "ASHA-BB"
+    # ASHA_CTS = "ASHA-CTS"
+    GP = "GP"
+    BOHB = "BOHB"
+    REA = "REA"
+    MOBSTER = "MOB"
+    TPE = "TPE"
+    # BORE = "BORE"
+    # ZERO_SHOT = "ZS"
+    # RUSH = "RUSH"
+    HYPERTUNE = "HT"
 
     # CQR
     CQR = "CQR"
@@ -86,157 +87,157 @@ def search_options(args: MethodArguments) -> Dict[str, Any]:
 
 
 methods = {
-    # Methods.RS: lambda method_arguments: FIFOScheduler(
-    #     config_space=method_arguments.config_space,
-    #     searcher="random",
-    #     metric=method_arguments.metric,
-    #     mode=method_arguments.mode,
-    #     random_seed=method_arguments.random_seed,
-    # ),
-    # Methods.ASHA: lambda method_arguments: HyperbandScheduler(
-    #     config_space=method_arguments.config_space,
-    #     searcher="random",
-    #     search_options=search_options(method_arguments),
-    #     mode=method_arguments.mode,
-    #     metric=method_arguments.metric,
-    #     resource_attr=method_arguments.resource_attr,
-    #     random_seed=method_arguments.random_seed,
-    #     **_max_resource_attr_or_max_t(method_arguments),
-    # ),
-    # # Methods.MSR: lambda method_arguments: MedianStoppingRule(
-    # #     scheduler=FIFOScheduler(
-    # #         config_space=method_arguments.config_space,
-    # #         searcher="random",
-    # #         metric=method_arguments.metric,
-    # #         mode=method_arguments.mode,
-    # #         random_seed=method_arguments.random_seed,
-    # #     ),
-    # #     resource_attr=method_arguments.resource_attr,
-    # #     running_average=False,
-    # # ),
-    # # Methods.ASHA_BB: lambda method_arguments: BoundingBox(
-    # #     scheduler_fun=lambda new_config_space, mode, metric: HyperbandScheduler(
-    # #         new_config_space,
-    # #         searcher="random",
-    # #         metric=metric,
-    # #         mode=mode,
-    # #         search_options=search_options(method_arguments),
-    # #         resource_attr=method_arguments.resource_attr,
-    # #         random_seed=method_arguments.random_seed,
-    # #         **_max_resource_attr_or_max_t(method_arguments),
-    # #     ),
-    # #     mode=method_arguments.mode,
-    # #     metric=method_arguments.metric,
-    # #     config_space=method_arguments.config_space,
-    # #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
-    # #     num_hyperparameters_per_task=10,
-    # # ),
-    # # Methods.ASHA_CTS: lambda method_arguments: HyperbandScheduler(
-    # #     config_space=method_arguments.config_space,
-    # #     searcher=QuantileBasedSurrogateSearcher(
-    # #         mode=method_arguments.mode,
-    # #         config_space=method_arguments.config_space,
-    # #         metric=method_arguments.metric,
-    # #         transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
-    # #         random_seed=method_arguments.random_seed,
-    # #     ),
-    # #     mode=method_arguments.mode,
-    # #     metric=method_arguments.metric,
-    # #     resource_attr=method_arguments.resource_attr,
-    # #     **_max_resource_attr_or_max_t(method_arguments),
-    # # ),
-    # Methods.GP: lambda method_arguments: FIFOScheduler(
-    #     method_arguments.config_space,
-    #     searcher="bayesopt",
-    #     search_options=search_options(method_arguments),
-    #     metric=method_arguments.metric,
-    #     mode=method_arguments.mode,
-    #     random_seed=method_arguments.random_seed,
-    # ),
-    # Methods.REA: lambda method_arguments: FIFOScheduler(
-    #     config_space=method_arguments.config_space,
-    #     searcher=RegularizedEvolution(
+    Methods.RS: lambda method_arguments: FIFOScheduler(
+        config_space=method_arguments.config_space,
+        searcher="random",
+        metric=method_arguments.metric,
+        mode=method_arguments.mode,
+        random_seed=method_arguments.random_seed,
+    ),
+    Methods.ASHA: lambda method_arguments: HyperbandScheduler(
+        config_space=method_arguments.config_space,
+        searcher="random",
+        search_options=search_options(method_arguments),
+        mode=method_arguments.mode,
+        metric=method_arguments.metric,
+        resource_attr=method_arguments.resource_attr,
+        random_seed=method_arguments.random_seed,
+        **_max_resource_attr_or_max_t(method_arguments),
+    ),
+    # Methods.MSR: lambda method_arguments: MedianStoppingRule(
+    #     scheduler=FIFOScheduler(
     #         config_space=method_arguments.config_space,
+    #         searcher="random",
     #         metric=method_arguments.metric,
     #         mode=method_arguments.mode,
     #         random_seed=method_arguments.random_seed,
-    #         population_size=10,
-    #         sample_size=5,
     #     ),
-    #     metric=method_arguments.metric,
-    #     mode=method_arguments.mode,
-    #     random_seed=method_arguments.random_seed,
-    # ),
-    # Methods.BOHB: lambda method_arguments: HyperbandScheduler(
-    #     config_space=method_arguments.config_space,
-    #     searcher="kde",
-    #     search_options={"debug_log": False, "min_bandwidth": 0.1},
-    #     mode=method_arguments.mode,
-    #     metric=method_arguments.metric,
     #     resource_attr=method_arguments.resource_attr,
-    #     random_seed=method_arguments.random_seed,
-    #     **_max_resource_attr_or_max_t(method_arguments),
+    #     running_average=False,
     # ),
-    # Methods.TPE: lambda method_arguments: FIFOScheduler(
-    #     config_space=method_arguments.config_space,
-    #     searcher="kde",
-    #     search_options={"debug_log": False, "min_bandwidth": 0.1},
-    #     metric=method_arguments.metric,
-    #     mode=method_arguments.mode,
-    #     random_seed=method_arguments.random_seed,
-    # ),
-    # # Methods.BORE: lambda method_arguments: FIFOScheduler(
-    # #     config_space=method_arguments.config_space,
-    # #     searcher="bore",
-    # #     search_options={"classifier": "mlp"},
-    # #     metric=method_arguments.metric,
-    # #     mode=method_arguments.mode,
-    # #     random_seed=method_arguments.random_seed,
-    # # ),
-    # Methods.MOBSTER: lambda method_arguments: HyperbandScheduler(
-    #     method_arguments.config_space,
-    #     searcher="bayesopt",
-    #     search_options=search_options(method_arguments),
+    # Methods.ASHA_BB: lambda method_arguments: BoundingBox(
+    #     scheduler_fun=lambda new_config_space, mode, metric: HyperbandScheduler(
+    #         new_config_space,
+    #         searcher="random",
+    #         metric=metric,
+    #         mode=mode,
+    #         search_options=search_options(method_arguments),
+    #         resource_attr=method_arguments.resource_attr,
+    #         random_seed=method_arguments.random_seed,
+    #         **_max_resource_attr_or_max_t(method_arguments),
+    #     ),
     #     mode=method_arguments.mode,
     #     metric=method_arguments.metric,
-    #     resource_attr=method_arguments.resource_attr,
-    #     random_seed=method_arguments.random_seed,
-    #     **_max_resource_attr_or_max_t(method_arguments),
-    # ),
-    # # Methods.ZERO_SHOT: lambda method_arguments: ZeroShotTransfer(
-    # #     config_space=method_arguments.config_space,
-    # #     metric=method_arguments.metric,
-    # #     mode=method_arguments.mode,
-    # #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
-    # #     use_surrogates=method_arguments.use_surrogates,
-    # #     random_seed=method_arguments.random_seed,
-    # # ),
-    # # Methods.RUSH: lambda method_arguments: RUSHScheduler(
-    # #     config_space=method_arguments.config_space,
-    # #     metric=method_arguments.metric,
-    # #     mode=method_arguments.mode,
-    # #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
-    # #     resource_attr=method_arguments.resource_attr,
-    # #     random_seed=method_arguments.random_seed,
-    # #     **_max_resource_attr_or_max_t(method_arguments),
-    # # ),
-    # Methods.HYPERTUNE: lambda method_arguments: HyperbandScheduler(
     #     config_space=method_arguments.config_space,
-    #     searcher="hypertune",
-    #     search_options=dict(
-    #         debug_log=False,
-    #         model="gp_independent",
-    #         opt_skip_init_length=500,
-    #         opt_skip_period=25,
+    #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
+    #     num_hyperparameters_per_task=10,
+    # ),
+    # Methods.ASHA_CTS: lambda method_arguments: HyperbandScheduler(
+    #     config_space=method_arguments.config_space,
+    #     searcher=QuantileBasedSurrogateSearcher(
+    #         mode=method_arguments.mode,
+    #         config_space=method_arguments.config_space,
+    #         metric=method_arguments.metric,
+    #         transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
+    #         random_seed=method_arguments.random_seed,
     #     ),
     #     mode=method_arguments.mode,
     #     metric=method_arguments.metric,
     #     resource_attr=method_arguments.resource_attr,
-    #     random_seed=method_arguments.random_seed,
-    #     brackets=method_arguments.num_brackets,
-    #     points_to_evaluate=method_arguments.points_to_evaluate,
     #     **_max_resource_attr_or_max_t(method_arguments),
     # ),
+    Methods.GP: lambda method_arguments: FIFOScheduler(
+        method_arguments.config_space,
+        searcher="bayesopt",
+        search_options=search_options(method_arguments),
+        metric=method_arguments.metric,
+        mode=method_arguments.mode,
+        random_seed=method_arguments.random_seed,
+    ),
+    Methods.REA: lambda method_arguments: FIFOScheduler(
+        config_space=method_arguments.config_space,
+        searcher=RegularizedEvolution(
+            config_space=method_arguments.config_space,
+            metric=method_arguments.metric,
+            mode=method_arguments.mode,
+            random_seed=method_arguments.random_seed,
+            population_size=10,
+            sample_size=5,
+        ),
+        metric=method_arguments.metric,
+        mode=method_arguments.mode,
+        random_seed=method_arguments.random_seed,
+    ),
+    Methods.BOHB: lambda method_arguments: HyperbandScheduler(
+        config_space=method_arguments.config_space,
+        searcher="kde",
+        search_options={"debug_log": False, "min_bandwidth": 0.1},
+        mode=method_arguments.mode,
+        metric=method_arguments.metric,
+        resource_attr=method_arguments.resource_attr,
+        random_seed=method_arguments.random_seed,
+        **_max_resource_attr_or_max_t(method_arguments),
+    ),
+    Methods.TPE: lambda method_arguments: FIFOScheduler(
+        config_space=method_arguments.config_space,
+        searcher="kde",
+        search_options={"debug_log": False, "min_bandwidth": 0.1},
+        metric=method_arguments.metric,
+        mode=method_arguments.mode,
+        random_seed=method_arguments.random_seed,
+    ),
+    # Methods.BORE: lambda method_arguments: FIFOScheduler(
+    #     config_space=method_arguments.config_space,
+    #     searcher="bore",
+    #     search_options={"classifier": "mlp"},
+    #     metric=method_arguments.metric,
+    #     mode=method_arguments.mode,
+    #     random_seed=method_arguments.random_seed,
+    # ),
+    Methods.MOBSTER: lambda method_arguments: HyperbandScheduler(
+        method_arguments.config_space,
+        searcher="bayesopt",
+        search_options=search_options(method_arguments),
+        mode=method_arguments.mode,
+        metric=method_arguments.metric,
+        resource_attr=method_arguments.resource_attr,
+        random_seed=method_arguments.random_seed,
+        **_max_resource_attr_or_max_t(method_arguments),
+    ),
+    # Methods.ZERO_SHOT: lambda method_arguments: ZeroShotTransfer(
+    #     config_space=method_arguments.config_space,
+    #     metric=method_arguments.metric,
+    #     mode=method_arguments.mode,
+    #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
+    #     use_surrogates=method_arguments.use_surrogates,
+    #     random_seed=method_arguments.random_seed,
+    # ),
+    # Methods.RUSH: lambda method_arguments: RUSHScheduler(
+    #     config_space=method_arguments.config_space,
+    #     metric=method_arguments.metric,
+    #     mode=method_arguments.mode,
+    #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
+    #     resource_attr=method_arguments.resource_attr,
+    #     random_seed=method_arguments.random_seed,
+    #     **_max_resource_attr_or_max_t(method_arguments),
+    # ),
+    Methods.HYPERTUNE: lambda method_arguments: HyperbandScheduler(
+        config_space=method_arguments.config_space,
+        searcher="hypertune",
+        search_options=dict(
+            debug_log=False,
+            model="gp_independent",
+            opt_skip_init_length=500,
+            opt_skip_period=25,
+        ),
+        mode=method_arguments.mode,
+        metric=method_arguments.metric,
+        resource_attr=method_arguments.resource_attr,
+        random_seed=method_arguments.random_seed,
+        brackets=method_arguments.num_brackets,
+        points_to_evaluate=method_arguments.points_to_evaluate,
+        **_max_resource_attr_or_max_t(method_arguments),
+    ),
 }
 
 
@@ -329,6 +330,10 @@ if __name__ == "__main__":
             blackbox_name=benchmark.blackbox_name,
             dataset=benchmark.dataset_name,
         )
+        points_to_evaluate = [
+            {k: v.sample() for k, v in backend.blackbox.configuration_space.items()}
+            for _ in range(4)
+        ]
         for method_name, method_fun in methods.items():
             print(f"checking initialization of: {method_name}, {benchmark_name}")
             scheduler = method_fun(
@@ -345,6 +350,7 @@ if __name__ == "__main__":
                         datasets=benchmark.datasets,
                     ),
                     use_surrogates=benchmark_name == "lcbench-Fashion-MNIST",
+                    points_to_evaluate=points_to_evaluate,
                 )
             )
             scheduler.suggest(0)

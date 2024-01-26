@@ -24,12 +24,12 @@ pymoo>=0.6.0
 scikit-learn
 
 [benchmarks]
-datasets==1.8.0
-tqdm
-transformers
-filelock
 torch
 torchvision
+tqdm
+filelock
+datasets==1.8.0
+transformers
 
 [blackbox-repository]
 numpy<1.24.0,>=1.16.0
@@ -102,12 +102,12 @@ pandas
 fastparquet==0.8.1
 xgboost
 h5py
-datasets==1.8.0
-tqdm
-transformers
-filelock
 torch
 torchvision
+tqdm
+filelock
+datasets==1.8.0
+transformers
 onnxruntime==1.10.0
 pyyaml
 configspace<=0.6.1
