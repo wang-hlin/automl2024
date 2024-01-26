@@ -47,8 +47,8 @@ class Methods:
     RS = "RS"
     ASHA = "ASHA"
     MSR = "RS-MSR"
-    # ASHA_BB = "ASHA-BB"
-    # ASHA_CTS = "ASHA-CTS"
+    ASHA_BB = "ASHA-BB"
+    ASHA_CTS = "ASHA-CTS"
     GP = "GP"
     BOHB = "BOHB"
     REA = "REA"
@@ -102,37 +102,37 @@ methods = {
         resource_attr=method_arguments.resource_attr,
         running_average=False,
     ),
-    # Methods.ASHA_BB: lambda method_arguments: BoundingBox(
-    #     scheduler_fun=lambda new_config_space, mode, metric: HyperbandScheduler(
-    #         new_config_space,
-    #         searcher="random",
-    #         metric=metric,
-    #         mode=mode,
-    #         search_options=search_options(method_arguments),
-    #         resource_attr=method_arguments.resource_attr,
-    #         random_seed=method_arguments.random_seed,
-    #         **_max_resource_attr_or_max_t(method_arguments),
-    #     ),
-    #     mode=method_arguments.mode,
-    #     metric=method_arguments.metric,
-    #     config_space=method_arguments.config_space,
-    #     transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
-    #     num_hyperparameters_per_task=10,
-    # ),
-    # Methods.ASHA_CTS: lambda method_arguments: HyperbandScheduler(
-    #     config_space=method_arguments.config_space,
-    #     searcher=QuantileBasedSurrogateSearcher(
-    #         mode=method_arguments.mode,
-    #         config_space=method_arguments.config_space,
-    #         metric=method_arguments.metric,
-    #         transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
-    #         random_seed=method_arguments.random_seed,
-    #     ),
-    #     mode=method_arguments.mode,
-    #     metric=method_arguments.metric,
-    #     resource_attr=method_arguments.resource_attr,
-    #     **_max_resource_attr_or_max_t(method_arguments),
-    # ),
+    Methods.ASHA_BB: lambda method_arguments: BoundingBox(
+        scheduler_fun=lambda new_config_space, mode, metric: HyperbandScheduler(
+            new_config_space,
+            searcher="random",
+            metric=metric,
+            mode=mode,
+            search_options=search_options(method_arguments),
+            resource_attr=method_arguments.resource_attr,
+            random_seed=method_arguments.random_seed,
+            **_max_resource_attr_or_max_t(method_arguments),
+        ),
+        mode=method_arguments.mode,
+        metric=method_arguments.metric,
+        config_space=method_arguments.config_space,
+        transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
+        num_hyperparameters_per_task=10,
+    ),
+    Methods.ASHA_CTS: lambda method_arguments: HyperbandScheduler(
+        config_space=method_arguments.config_space,
+        searcher=QuantileBasedSurrogateSearcher(
+            mode=method_arguments.mode,
+            config_space=method_arguments.config_space,
+            metric=method_arguments.metric,
+            transfer_learning_evaluations=method_arguments.transfer_learning_evaluations,
+            random_seed=method_arguments.random_seed,
+        ),
+        mode=method_arguments.mode,
+        metric=method_arguments.metric,
+        resource_attr=method_arguments.resource_attr,
+        **_max_resource_attr_or_max_t(method_arguments),
+    ),
     Methods.GP: lambda method_arguments: FIFOScheduler(
         method_arguments.config_space,
         searcher="bayesopt",

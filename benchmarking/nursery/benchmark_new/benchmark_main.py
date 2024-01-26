@@ -23,7 +23,7 @@ from syne_tune.blackbox_repository.simulated_tabular_backend import (
 from syne_tune.experiments.launchers.hpo_main_simulator import (
     get_transfer_learning_evaluations,
 )
-from benchmarking.nursery.benchmark_automl.baselines import MethodArguments
+from benchmarking.nursery.benchmark_new.baselines import MethodArguments
 
 from syne_tune.backend.simulator_backend.simulator_callback import SimulatorCallback
 from syne_tune.stopping_criterion import StoppingCriterion
@@ -35,7 +35,8 @@ def parse_args(methods: Dict[str, Any], benchmark_definitions: Dict[str, Any]):
     parser.add_argument(
         "--experiment_tag",
         type=str,
-        required=True,
+        default="tst",
+        required=False,
     )
     parser.add_argument(
         "--num_seeds",
@@ -58,7 +59,9 @@ def parse_args(methods: Dict[str, Any], benchmark_definitions: Dict[str, Any]):
         help="first seed to run (if ``run_all_seed`` == 1)",
     )
     parser.add_argument(
-        "--method", type=str, required=False, help="a method to run from baselines.py"
+        "--method", type=str, 
+        # default="HT",
+        required=False, help="a method to run from baselines.py"
     )
     parser.add_argument(
         "--benchmark",
@@ -126,20 +129,51 @@ def main(methods: Dict[str, Any], benchmark_definitions: Dict[str, Any]):
             config_space = backend.blackbox.configuration_space
             method_kwargs = {"max_t": max_resource_level}
 
+
+        ##############
+        max_t = max(backend.blackbox.fidelity_values)
+        resource_attr = next(iter(backend.blackbox.fidelity_space.keys()))
+
+        # 5 candidates initially to be evaluated
+        num_random_candidates = 5
+        random_state = np.random.RandomState(seed)
+        points_to_evaluate = [
+            {
+                k: v.sample(random_state=random_state)
+                for k, v in backend.blackbox.configuration_space.items()
+            }
+            for _ in range(num_random_candidates)
+        ]    
+        ###########
+
+        # scheduler = methods[method](
+        #     MethodArguments(
+        #         config_space=config_space,
+        #         metric=benchmark.metric,
+        #         mode=benchmark.mode,
+        #         random_seed=seed,
+        #         resource_attr=resource_attr,
+        #         transfer_learning_evaluations=get_transfer_learning_evaluations(
+        #             blackbox_name=benchmark.blackbox_name,
+        #             test_task=benchmark.dataset_name,
+        #             datasets=benchmark.datasets,
+        #         ),
+        #         use_surrogates="lcbench" in benchmark_name,
+        #         **method_kwargs,
+        #     )
+        # )
+
         scheduler = methods[method](
             MethodArguments(
-                config_space=config_space,
+                config_space=backend.blackbox.configuration_space,
                 metric=benchmark.metric,
                 mode=benchmark.mode,
                 random_seed=seed,
+                max_t=max_t,
                 resource_attr=resource_attr,
-                transfer_learning_evaluations=get_transfer_learning_evaluations(
-                    blackbox_name=benchmark.blackbox_name,
-                    test_task=benchmark.dataset_name,
-                    datasets=benchmark.datasets,
-                ),
+                num_brackets=1,
                 use_surrogates="lcbench" in benchmark_name,
-                **method_kwargs,
+                points_to_evaluate=points_to_evaluate,
             )
         )
 
@@ -169,8 +203,8 @@ def main(methods: Dict[str, Any], benchmark_definitions: Dict[str, Any]):
 
 
 if __name__ == "__main__":
-    from benchmarking.nursery.benchmark_automl.baselines import methods
-    from benchmarking.nursery.benchmark_automl.benchmark_definitions import (
+    from benchmarking.nursery.benchmark_new.baselines import methods
+    from benchmarking.nursery.benchmark_new.benchmark_definitions import (
         benchmark_definitions,
     )
 

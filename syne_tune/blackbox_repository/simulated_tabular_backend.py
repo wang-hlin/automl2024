@@ -335,6 +335,7 @@ class BlackboxRepositoryBackend(_BlackboxSimulatorBackend):
             self._blackbox = load_blackbox(
                 self.blackbox_name,
                 yahpo_kwargs=self._surrogate_kwargs,
+                # ignore_hash=True,
             )
             if self.dataset is None:
                 assert not isinstance(self._blackbox, dict), (

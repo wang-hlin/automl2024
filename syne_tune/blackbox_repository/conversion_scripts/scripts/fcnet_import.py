@@ -64,7 +64,7 @@ SHA256_HASH = "1bb685bbef55ad339c1f81100c66e1fb7755ab4237ee1ed2ff8e59fe05d6df96"
 
 CONFIGURATION_SPACE = {
     
-    "epochs" : 128,
+    # "epochs" : choice([128]),
 
     "hp_activation_fn_1": choice(["tanh", "relu"]),
     "hp_activation_fn_2": choice(["tanh", "relu"]),

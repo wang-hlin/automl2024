@@ -132,6 +132,7 @@ class SurrogateSearcher(StochasticSearcher):
 
     def fit_model(self):
         X, z = self.make_input_target()
+        # del self.surrogate_kwargs["min_samples_to_conformalize"]
         self.surrogate_model = QuantileRegressionSurrogateModel(
             config_space=self.config_space,
             max_fit_samples=self.max_fit_samples,
@@ -139,7 +140,7 @@ class SurrogateSearcher(StochasticSearcher):
             mode=self.mode,
             min_samples_to_conformalize=32,
             valid_fraction=0.1,
-            **self.surrogate_kwargs,
+            # **self.surrogate_kwargs,
         )
         self.surrogate_model.fit(df_features=X, y=z)
 

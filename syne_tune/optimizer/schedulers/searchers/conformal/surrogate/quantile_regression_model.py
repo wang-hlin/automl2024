@@ -80,7 +80,8 @@ class GradientBoostingQuantileRegressor(QuantileRegressor, GradientBoostingRegre
 
         self.quantile_regressors = {
             quantile: GradientBoostingRegressor(
-                loss="quantile", alpha=quantile, **kwargs
+                loss="quantile", alpha=quantile, 
+                # **kwargs
             )
             for quantile in quantiles
         }

@@ -108,6 +108,7 @@ class BlackboxTabular(Blackbox):
         assert len(hyperparameters) == len(
             hyperparameters.drop_duplicates()
         ), "some hps are duplicated, use a seed column"
+        # print(configuration_space)
         assert len(configuration_space) == num_hps
         for name in configuration_space.keys():
             assert name in hyperparameters.columns
