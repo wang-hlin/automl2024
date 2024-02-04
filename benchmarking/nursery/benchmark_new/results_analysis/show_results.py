@@ -14,9 +14,9 @@
 import logging
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
-from benchmarking.nursery.benchmark_automl.baselines import Methods
+from benchmarking.nursery.benchmark_new.baselines import Methods
 
-from benchmarking.nursery.benchmark_automl.results_analysis.utils import (
+from benchmarking.nursery.benchmark_new.results_analysis.utils import (
     method_styles,
     load_and_cache,
     plot_results,
@@ -29,7 +29,7 @@ if __name__ == "__main__":
         "--experiment_tag",
         type=str,
         required=False,
-        default="purple-akita",
+        default="experiment-a",
         help="the experiment tag that was displayed when running the experiment",
     )
     args, _ = parser.parse_known_args()
@@ -60,19 +60,29 @@ if __name__ == "__main__":
         print(f"number of hyperband evaluations for {benchmark}: {n}")
 
     methods_to_show = [
+        # Methods.RS,
+        # Methods.TPE,
+        # Methods.REA,
+        # # Methods.BORE,
+        # Methods.GP,
+        # Methods.MSR,
+        # Methods.ASHA,
+        # Methods.BOHB,
+        # Methods.MOBSTER,
+        # # Methods.RUSH,
+        # # Methods.ASHA_BB,
+        # # Methods.ZERO_SHOT,
+        # # Methods.ASHA_CTS,
+
         Methods.RS,
-        Methods.TPE,
-        Methods.REA,
-        # Methods.BORE,
-        Methods.GP,
-        Methods.MSR,
         Methods.ASHA,
+        Methods.GP,
         Methods.BOHB,
+        Methods.REA,
         Methods.MOBSTER,
-        # Methods.RUSH,
-        # Methods.ASHA_BB,
-        # Methods.ZERO_SHOT,
-        # Methods.ASHA_CTS,
+        Methods.TPE,
+        Methods.HYPERTUNE,
+        Methods.multifidelity(Methods.CQR),
     ]
     print_rank_table(benchmarks_to_df, methods_to_show)
 

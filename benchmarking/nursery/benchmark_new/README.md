@@ -1,13 +1,16 @@
 # Benchmark Automl submission
 
-This folder shows one way to run quick experiments running different scheduler on different benchmarks and plot
- results once they are done.
+## Installation
+
+```
+conda create --name synetune python=3.9
+pip install 'syne-tune[extra,dev]'
+```
 
 To run all experiments, you can run the following:
 
 
 ```bash
-pip install -r benchmarking/nursery/benchmark_new/requirements.txt
 python benchmarking/nursery/benchmark_new/benchmark_main.py --experiment_tag "my-new-experiment" --num_seeds 2
 ```
 

@@ -23,7 +23,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
-from benchmarking.nursery.benchmark_automl.baselines import Methods
+from benchmarking.nursery.benchmark_new.baselines import Methods
 from syne_tune.constants import ST_TUNER_TIME
 from syne_tune.experiments import get_metadata, load_experiments_df
 
@@ -53,14 +53,19 @@ class MethodStyle:
 show_seeds = False
 method_styles = {
     Methods.RS: MethodStyle(rs_color, fifo_style),
+    Methods.ASHA: MethodStyle(rs_color, multifidelity_style),
+    Methods.GP: MethodStyle(gp_color, fifo_style),
+    Methods.BOHB: MethodStyle(tpe_color, multifidelity_style),
+    Methods.REA: MethodStyle(rea_color, fifo_style),
+    Methods.MOBSTER: MethodStyle(gp_color, multifidelity_style),
     Methods.TPE: MethodStyle(tpe_color, fifo_style),
     # Methods.BORE: MethodStyle(bore_color, fifo_style),
-    Methods.GP: MethodStyle(gp_color, fifo_style),
-    Methods.REA: MethodStyle(rea_color, fifo_style),
-    Methods.ASHA: MethodStyle(rs_color, multifidelity_style),
-    Methods.MSR: MethodStyle(rs_color, multifidelity_style2),
-    Methods.BOHB: MethodStyle(tpe_color, multifidelity_style),
-    Methods.MOBSTER: MethodStyle(gp_color, multifidelity_style),
+    
+    
+    Methods.HYPERTUNE: MethodStyle(rs_color, multifidelity_style, '.'),
+    Methods.multifidelity(Methods.CQR): MethodStyle(rs_color, multifidelity_style2),
+    
+    
     # transfer learning
     # Methods.ASHA_BB: MethodStyle(hb_bb_color, multifidelity_style, "."),
     # Methods.ASHA_CTS: MethodStyle(hb_ts_color, multifidelity_style, "."),
